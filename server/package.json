@@ -9,6 +9,7 @@
     "make-admin": "node scripts/makeAdmin.js",
     "seed": "node scripts/seed.js",
     "test:capstone": "node tests/capstone-smoke.js",
+    "test:prod": "node tests/prod-check.js",
     "test:auth": "node tests/lab15-auth-test.js",
     "test:owner": "node tests/lab-ownership-test.js",
     "test:challenge": "node tests/lab16-challenge-test.js",

@@ -6,8 +6,9 @@
 
 | | URL |
 |---|---|
-| Front-End (SPA) | _to be filled after deployment_ |
-| Back-End (API) | _to be filled after deployment_ |
+| Front-End (SPA) | https://capstone-client-phi.vercel.app |
+| Back-End (API) | https://capstone-portfolio-zeta.vercel.app |
+| API health check | https://capstone-portfolio-zeta.vercel.app/api/health |
 
 ## Screenshots
 
@@ -154,9 +155,10 @@ Base URL locally: `http://localhost:5000`.
 
 ```bash
 cd server
-npm run test:capstone     # 49 assertions over all 14 endpoints (needs the API running)
+npm run test:capstone     # 49 assertions over all 14 endpoints (needs the API running locally)
 npm run test:auth         # lab regression: JWT protection
 npm run test:owner        # lab regression: author ownership
+node tests/prod-check.js  # 18 assertions against the deployed Vercel API
 ```
 
 ## Deploying (two Vercel projects, one repository)
