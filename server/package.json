@@ -1,0 +1,40 @@
+{
+  "name": "capstone-server",
+  "version": "1.0.0",
+  "description": "Capstone: Portfolio & Blog RESTful API (Node.js + Express + Mongoose)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "make-admin": "node scripts/makeAdmin.js",
+    "seed": "node scripts/seed.js",
+    "test:capstone": "node tests/capstone-smoke.js",
+    "test:auth": "node tests/lab15-auth-test.js",
+    "test:owner": "node tests/lab-ownership-test.js",
+    "test:challenge": "node tests/lab16-challenge-test.js",
+    "test:security": "node tests/security-test.js"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "jwt",
+    "rest-api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.6.0",
+    "mongoose": "^9.10.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

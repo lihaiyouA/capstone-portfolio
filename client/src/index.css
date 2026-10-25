@@ -1,0 +1,1466 @@
+/* Lab 8.4：Tailwind v4 入口。必须写在所有自定义规则之前。 */
+@import "tailwindcss";
+
+/* 自定义样式放进 components 层：
+   Tailwind 的 utilities 层优先级更高，所以 Header 上的 px-6 / text-white
+   等工具类不会被下面的旧全局选择器（a、* 等）覆盖。 */
+@layer components {
+
+/* 下面的自定义样式位于 Tailwind 之后，用于覆盖 Preflight 的默认值 */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 平滑滚动：点击导航链接时平滑跳转 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 全局基础样式定义 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+/* 标题统一样式 */
+h1, h2, h3 {
+    color: #1e293b;
+}
+
+a {
+    text-decoration: none;
+    color: #3b82f6;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================
+   盒模型：居中页面布局
+   使用 max-width + margin: 0 auto 实现水平居中
+   ============================================ */
+.container {
+    /* 与 Header 的 max-w-6xl(72rem) 对齐，让导航和内容左右边缘一致 */
+    max-width: 72rem;
+    margin: 0 auto;    /* 0 for top/bottom, auto for left/right */
+    padding: 0 24px;
+}
+
+/* ============================================
+   盒模型：为 section 添加内边距与外边距
+   padding 提供内容呼吸空间
+   margin-bottom 在区块之间创建垂直分隔
+   ============================================ */
+section {
+    /* 60px of padding on the top and bottom */
+    /* 20px of padding on the left and right */
+    padding: 60px 20px;
+    /* Add this line to create space between sections */
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* Section 标题装饰：左侧蓝色竖条 */
+section h2 {
+    font-size: 28px;
+    margin-bottom: 16px;
+    border-left: 4px solid #3b82f6;
+    padding-left: 12px;
+}
+
+section p {
+    font-size: 17px;
+    color: #475569;
+}
+
+/* ============================================
+   盒模型：项目卡片样式
+   使用 border、padding、margin 打造卡片画廊效果
+   增强：hover 上浮 + 阴影 + 边框高亮
+   ============================================ */
+.project-card {
+    /* A subtle border */
+    border: 1px solid #e2e8f0;
+    border-radius: 8px; /* Bonus: rounds the corners! */
+    /* Internal spacing for the card content */
+    padding: 24px;
+    /* Space between each card */
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    /* 增强：平滑过渡动画 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* 增强：卡片 hover 效果 —— 上浮 + 阴影 + 边框变色 */
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(59, 130, 246, 0.15);
+    border-color: #3b82f6;
+}
+
+.project-card:last-child {
+    margin-bottom: 0;
+}
+
+.project-card h3 {
+    margin-bottom: 8px;
+    font-size: 1.25rem;
+}
+
+.card-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: 16px;
+    border-radius: 6px;
+}
+
+/* 原图分辨率较低的项目使用较小尺寸，避免图片被放大 */
+.card-image--small {
+    width: 100%;
+    max-width: 220px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-title {
+    margin-bottom: 8px;
+    font-size: 1.25rem;
+}
+
+.card-description {
+    margin-bottom: 16px;
+    color: #475569;
+}
+
+.card-link {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.project-card p {
+    margin-bottom: 16px;
+    color: #475569;
+}
+
+/* 项目卡片网格布局 */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.projects-grid .project-card {
+    margin-bottom: 0;
+}
+
+/* 卡片技术标签 */
+.card-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.card-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #eff6ff;
+    color: #3b82f6;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* ============================================
+   技能标签样式
+   ============================================ */
+.skills-heading {
+    font-size: 1.1rem;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    color: #475569;
+}
+
+.skills-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.skill-tag {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    color: #1e40af;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+
+.skill-tag:hover {
+    border-color: #3b82f6;
+    background-color: #dbeafe;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   Lab 8.4：Header 已改用 Tailwind 工具类，
+   .site-header / nav ul / #theme-toggle 等旧规则已全部移除。
+   ============================================ */
+
+/* 4. 页脚样式 */
+.site-footer {
+    text-align: center;
+    padding: 20px; /* Challenge 1: breathing room */
+    margin-top: 40px;
+    color: #64748b;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    border-radius: 12px 12px 0 0;
+}
+
+.site-footer p {
+    margin: 0.5rem 0;
+}
+/* ============================================
+   Lab-Ch3-P2: CSS Grid "About Me" 双栏布局
+   ============================================ */
+
+/* Step 2, 3 & 4: 定义 Grid 容器、列宽、间距和对齐 */
+.about-me {
+    display: grid;
+    /* 左列固定 250px，右列占据剩余空间 (1fr) */
+    grid-template-columns: 250px 1fr; 
+    /* 两列之间留 40px 间距 */
+    gap: 40px; 
+    /* 让图片和文字在垂直方向上居中对齐 */
+    align-items: center; 
+}
+
+/* Step 5: 美化圆形头像 */
+.about-me-image {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%; /* 变成完美的圆形 */
+    object-fit: cover;  /* 保证图片不变形，居中裁剪 */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* 加一点阴影增加立体感 */
+}
+
+/* 可选：微调右侧文字的行高 */
+.about-me-text p {
+    margin-bottom: 16px;
+}
+/* ============================================
+   响应式适配：小屏幕优化
+   ============================================ */
+@media (max-width: 768px) {
+    section {
+        padding: 40px 16px;
+    }
+
+    /* 小屏上 About 区块由两栏改为一栏，否则固定 250px 的左列会把文字挤出屏幕 */
+    .about-me {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 24px;
+        text-align: center;
+    }
+
+    .about-me-image {
+        width: 180px;
+        height: 180px;
+    }
+
+    .skills-list {
+        flex-direction: column;
+    }
+
+    /* 小屏上让提交按钮占满一整行，更好点 */
+    .form-submit {
+        justify-self: stretch;
+        width: 100%;
+    }
+}
+/* ==================================== Dark Mode 暗黑模式样式 ========== */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* section区块暗黑 */
+body.dark-mode section {
+    background-color: #1e1e1e;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+body.dark-mode section h2 {
+    color: #f1f5f9;
+    border-left-color: #60a5fa;
+}
+body.dark-mode section p {
+    color: #cbd5e1;
+}
+
+/* 项目卡片暗黑 */
+body.dark-mode .project-card {
+    background-color: #27272a;
+    border-color: #3f3f46;
+}
+body.dark-mode .project-card h3 {
+    color: #f1f5f9;
+}
+
+/* 卡片标签 */
+body.dark-mode .card-tag {
+    background-color: #1e3a5f;
+    color: #93c5fd;
+}
+
+/* 技能标签 */
+body.dark-mode .skill-tag {
+    background-color: #1e293b;
+    border-color: #475569;
+    color: #93c5fd;
+}
+body.dark-mode .skill-tag:hover {
+    background-color: #334155;
+    border-color: #60a5fa;
+}
+
+/* 页脚footer */
+body.dark-mode .site-footer {
+    background-color: #1e1e1e;
+    border-top-color: #333;
+    color: #94a3b8;
+}
+
+/* ============================================
+    新增：GitHub 仓库列表样式
+   ============================================ */
+
+
+/* ============================================
+    新增：GitHub 仓库列表样式
+    ============================================ */
+#github-repos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+}
+
+/* GitHub 仓库卡片内的链接 */
+#github-repos-container a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+#github-repos-container a:hover {
+    text-decoration: underline;
+}
+
+/* 暗黑模式下 GitHub 链接颜色 */
+body.dark-mode #github-repos-container a {
+    color: #93c5fd;
+}
+
+/* ============================================
+        受控表单 Contact Me 样式
+   ============================================ */
+.contact-section .contact-intro {
+    margin-bottom: 24px;
+}
+
+.contact-form {
+    display: grid;
+    gap: 18px;
+    max-width: 640px;
+}
+
+/* 每个字段：标签在上、控件在下 */
+.form-field {
+    display: grid;
+    gap: 6px;
+}
+
+.form-field label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* 输入框与文本域共用样式 */
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font: inherit;
+    color: #1e293b;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* 聚焦状态：蓝色描边 + 光晕，明确当前输入位置 */
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: #94a3b8;
+}
+
+/* 校验错误提示 */
+.form-error {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: #b91c1c;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+}
+
+/* 提交按钮 */
+.form-submit {
+    justify-self: start;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.form-submit:hover:not(:disabled) {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.form-submit:disabled {
+    background-color: #86efac;
+    color: #14532d;
+    cursor: not-allowed;
+}
+
+/* 暗黑模式下的表单配色 */
+body.dark-mode .form-field label {
+    color: #cbd5e1;
+}
+
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea {
+    color: #e2e8f0;
+    background-color: #27272a;
+    border-color: #3f3f46;
+}
+
+body.dark-mode .contact-form input:focus,
+body.dark-mode .contact-form textarea:focus {
+    background-color: #1e1e1e;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+}
+
+body.dark-mode .form-error {
+    color: #fca5a5;
+    background-color: #3f1d1d;
+    border-color: #7f1d1d;
+}
+
+body.dark-mode .form-submit {
+    background-color: #60a5fa;
+    color: #121212;
+}
+
+body.dark-mode .form-submit:hover:not(:disabled) {
+    background-color: #93c5fd;
+}
+
+body.dark-mode .form-submit:disabled {
+    background-color: #14532d;
+    color: #86efac;
+}
+
+/* ============================================
+   Lab 8.2：Projects 的加载 / 错误 / 空状态
+   ============================================ */
+
+/* 这些区块要跨满 GitHub 网格的整行，不参与卡片列宽计算 */
+.projects-loading,
+.projects-error,
+.projects-empty {
+    grid-column: 1 / -1;
+}
+
+/* ---------------- 加载态 ---------------- */
+.projects-loading {
+    display: grid;
+    gap: 16px;
+}
+
+.projects-loading-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 1rem;
+    color: #64748b;
+}
+
+/* 旋转圈（LoadingSpinner 组件） */
+.spinner-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cbd5e1;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spinner-spin 0.8s linear infinite;
+}
+
+@keyframes spinner-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 骨架屏：三张与 ProjectCard 同形状的占位卡片 */
+.projects-skeleton {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.skeleton-card {
+    padding: 24px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.skeleton-line {
+    height: 14px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    /* 渐变从左往右扫过，形成 shimmer 微光效果 */
+    background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 37%, #e2e8f0 63%);
+    background-size: 400% 100%;
+    animation: skeleton-shimmer 1.4s ease infinite;
+}
+
+.skeleton-line--title {
+    width: 60%;
+    height: 20px;
+}
+
+.skeleton-line--short {
+    width: 40%;
+    margin-bottom: 0;
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+/* ---------------- 错误态 ---------------- */
+.projects-error {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    padding: 32px 24px;
+    text-align: center;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+}
+
+/* 红色的错误标题 */
+.projects-error-title {
+    margin: 0;
+    font-size: 1.15rem;
+    color: #dc2626;
+}
+
+.projects-error-hint {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 0.9rem;
+    color: #b91c1c;
+}
+
+/* 重试按钮 */
+.retry-button {
+    padding: 10px 24px;
+    font: inherit;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #dc2626;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.retry-button:hover {
+    background-color: #b91c1c;
+    transform: translateY(-1px);
+}
+
+/* ---------------- 空状态 ---------------- */
+.projects-empty {
+    margin: 0;
+    padding: 24px;
+    color: #64748b;
+    text-align: center;
+    background-color: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+}
+
+/* ---------------- 暗黑模式 ---------------- */
+body.dark-mode .projects-loading-text {
+    color: #94a3b8;
+}
+
+body.dark-mode .spinner {
+    border-color: #3f3f46;
+    border-top-color: #60a5fa;
+}
+
+body.dark-mode .skeleton-card {
+    background-color: #27272a;
+    border-color: #3f3f46;
+}
+
+body.dark-mode .skeleton-line {
+    background: linear-gradient(90deg, #3f3f46 25%, #52525b 37%, #3f3f46 63%);
+    background-size: 400% 100%;
+}
+
+body.dark-mode .projects-error {
+    background-color: #3f1d1d;
+    border-color: #7f1d1d;
+}
+
+body.dark-mode .projects-error-title,
+body.dark-mode .projects-error-hint {
+    color: #fca5a5;
+}
+
+body.dark-mode .retry-button {
+    background-color: #ef4444;
+    color: #121212;
+}
+
+body.dark-mode .retry-button:hover {
+    background-color: #f87171;
+}
+
+body.dark-mode .projects-empty {
+    color: #94a3b8;
+    background-color: #1e1e1e;
+    border-color: #3f3f46;
+}
+
+/* 尊重系统的「减少动态效果」设置 */
+@media (prefers-reduced-motion: reduce) {
+    .spinner,
+    .skeleton-line {
+        animation: none;
+    }
+}
+
+/* ============================================
+   期末新增：页面标题 / 通用按钮 / 提示条
+   ============================================ */
+
+/* 页面顶部一行：标题在左，计数或操作在右 */
+.page-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.page-header h2 {
+    margin-bottom: 0;
+}
+
+.page-count {
+    font-size: 0.9rem;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.page-subtitle {
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+    color: #64748b;
+}
+
+.text-link {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+code {
+    padding: 2px 6px;
+    font-size: 0.88em;
+    color: #3730a3;
+    background-color: #eef2ff;
+    border-radius: 4px;
+}
+
+/* 行内错误 / 空状态 */
+.inline-error {
+    padding: 14px 16px;
+    color: #b91c1c;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+}
+
+.empty-state {
+    margin: 0;
+    padding: 28px 20px;
+    color: #64748b;
+    text-align: center;
+    background-color: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+}
+
+/* 小徽章：private / 角色标签 */
+.badge,
+.role-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+
+.badge--warn {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* 通用按钮（后台与次要操作用） */
+.btn {
+    padding: 8px 16px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.btn--primary {
+    color: #ffffff;
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.btn--primary:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.btn--ghost {
+    background-color: transparent;
+}
+
+.btn--small {
+    padding: 5px 12px;
+    font-size: 0.82rem;
+}
+
+.btn--danger {
+    color: #b91c1c;
+    background-color: #fef2f2;
+    border-color: #fecaca;
+}
+
+.btn--danger:hover {
+    color: #ffffff;
+    background-color: #dc2626;
+    border-color: #dc2626;
+}
+
+/* 卡片底部的一排链接 */
+.card-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.card-actions .card-link {
+    margin-bottom: 0;
+}
+
+.card-link-muted {
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+/* ============================================
+   期末新增：博客列表与文章详情
+   ============================================ */
+.blog-list {
+    display: grid;
+    gap: 16px;
+}
+
+.blog-card {
+    padding: 22px 24px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(59, 130, 246, 0.12);
+    border-color: #3b82f6;
+}
+
+.blog-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.blog-card-title {
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    line-height: 1.35;
+}
+
+.blog-card-excerpt {
+    margin-bottom: 12px;
+    color: #475569;
+}
+
+.breadcrumb {
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+
+.post-title {
+    margin-bottom: 12px;
+    font-size: 1.9rem;
+    line-height: 1.3;
+}
+
+.post-meta {
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.post-content {
+    font-size: 1.03rem;
+    line-height: 1.8;
+    color: #334155;
+}
+
+.post-content p {
+    margin-bottom: 18px;
+}
+
+/* ============================================
+   期末新增：评论区
+   ============================================ */
+.comment-section h2 {
+    font-size: 1.4rem;
+}
+
+.comment-list {
+    display: grid;
+    gap: 12px;
+    padding: 0;
+    margin: 0 0 24px;
+    list-style: none;
+}
+
+.comment {
+    padding: 16px 18px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.comment-meta strong {
+    color: #1e293b;
+}
+
+.comment-body {
+    margin: 0;
+    color: #334155;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.comment-form {
+    display: grid;
+    gap: 14px;
+    max-width: 640px;
+}
+
+.comment-login-hint {
+    padding: 16px 18px;
+    background-color: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+}
+
+/* ============================================
+   期末新增：登录 / 注册页
+   ============================================ */
+.auth-section {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.auth-intro {
+    margin-bottom: 24px;
+}
+
+.auth-form {
+    display: grid;
+    gap: 16px;
+}
+
+.auth-switch {
+    margin-top: 20px;
+    font-size: 0.92rem;
+    color: #64748b;
+}
+
+/* 表单控件统一外观：覆盖 .admin-form / .auth-form / .comment-form */
+.form-field > span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select,
+.auth-form input,
+.comment-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font: inherit;
+    color: #1e293b;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.admin-form textarea,
+.comment-form textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus,
+.auth-form input:focus,
+.comment-form textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* 成功提示（联系表单发送成功） */
+.form-success {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: #065f46;
+    background-color: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 8px;
+}
+
+/* ============================================
+   期末新增：后台管理面板
+   ============================================ */
+.admin-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 20px 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-tab {
+    padding: 9px 18px;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #475569;
+    background-color: #f1f5f9;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-tab:hover {
+    background-color: #e2e8f0;
+}
+
+.admin-tab--active {
+    color: #ffffff;
+    background-color: #3b82f6;
+}
+
+.admin-tab--active:hover {
+    background-color: #2563eb;
+}
+
+.admin-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.admin-toolbar h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.admin-form {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 22px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.admin-form h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* 两个字段并排（窄屏自动堆叠） */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.form-field--checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: end;
+    padding-bottom: 10px;
+}
+
+.form-field--checkbox input {
+    width: auto;
+}
+
+.form-field--checkbox span {
+    font-weight: 500;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.form-actions .form-submit,
+.form-actions .btn {
+    display: inline-block;
+    text-align: center;
+}
+
+/* 表格：窄屏横向滚动，避免挤压 */
+.table-wrap {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table th {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #64748b;
+    background-color: #f8fafc;
+    white-space: nowrap;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.admin-table .cell-muted {
+    max-width: 380px;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.admin-table .col-actions {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.admin-table .col-actions .btn + .btn {
+    margin-left: 8px;
+}
+
+/* 留言收件箱 */
+.message-list {
+    display: grid;
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.message-item {
+    padding: 16px 18px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.message-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+.message-head .btn {
+    margin-left: auto;
+}
+
+.message-body {
+    margin: 0;
+    color: #334155;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.contact-info {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.contact-info h3 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.contact-info ul {
+    padding-left: 18px;
+    color: #475569;
+}
+
+.site-footer-meta {
+    font-size: 0.82rem;
+    color: #94a3b8;
+}
+
+/* ---------------- 暗黑模式：期末新增部分 ---------------- */
+/* Lab 版遗留的浅色文字在暗色背景下对比度不足，这里补上 */
+body.dark-mode .skills-heading,
+body.dark-mode .card-description,
+body.dark-mode .project-card p,
+body.dark-mode .card-link-muted,
+body.dark-mode .contact-intro,
+body.dark-mode .contact-section .contact-intro {
+    color: #cbd5e1;
+}
+
+body.dark-mode .page-count,
+body.dark-mode .page-subtitle,
+body.dark-mode .blog-meta,
+body.dark-mode .comment-meta,
+body.dark-mode .auth-switch,
+body.dark-mode .cell-muted,
+body.dark-mode .admin-table .cell-muted {
+    color: #94a3b8;
+}
+
+body.dark-mode code {
+    color: #c7d2fe;
+    background-color: #312e81;
+}
+
+body.dark-mode .inline-error {
+    color: #fca5a5;
+    background-color: #3f1d1d;
+    border-color: #7f1d1d;
+}
+
+body.dark-mode .empty-state {
+    color: #94a3b8;
+    background-color: #1e1e1e;
+    border-color: #3f3f46;
+}
+
+body.dark-mode .badge,
+body.dark-mode .role-badge {
+    background-color: #1e3a5f;
+    color: #93c5fd;
+}
+
+body.dark-mode .badge--warn {
+    background-color: #422006;
+    color: #fcd34d;
+}
+
+body.dark-mode .btn {
+    color: #e2e8f0;
+    background-color: #27272a;
+    border-color: #3f3f46;
+}
+
+body.dark-mode .btn:hover {
+    background-color: #3f3f46;
+}
+
+body.dark-mode .btn--primary {
+    color: #121212;
+    background-color: #60a5fa;
+    border-color: #60a5fa;
+}
+
+body.dark-mode .btn--primary:hover {
+    background-color: #93c5fd;
+    border-color: #93c5fd;
+}
+
+body.dark-mode .btn--danger {
+    color: #fca5a5;
+    background-color: #3f1d1d;
+    border-color: #7f1d1d;
+}
+
+body.dark-mode .btn--danger:hover {
+    color: #121212;
+    background-color: #ef4444;
+    border-color: #ef4444;
+}
+
+body.dark-mode .blog-card {
+    background-color: #27272a;
+    border-color: #3f3f46;
+}
+
+body.dark-mode .blog-card h3,
+body.dark-mode .comment-meta strong,
+body.dark-mode .post-title {
+    color: #f1f5f9;
+}
+
+body.dark-mode .blog-card-excerpt,
+body.dark-mode .post-content,
+body.dark-mode .comment-body,
+body.dark-mode .message-body,
+body.dark-mode .contact-info ul {
+    color: #cbd5e1;
+}
+
+body.dark-mode .post-meta,
+body.dark-mode .contact-info {
+    border-color: #3f3f46;
+}
+
+body.dark-mode .comment,
+body.dark-mode .comment-login-hint,
+body.dark-mode .admin-form,
+body.dark-mode .message-item {
+    background-color: #27272a;
+    border-color: #3f3f46;
+}
+
+body.dark-mode .admin-tabs {
+    border-bottom-color: #3f3f46;
+}
+
+body.dark-mode .admin-tab {
+    color: #cbd5e1;
+    background-color: #27272a;
+}
+
+body.dark-mode .admin-tab:hover {
+    background-color: #3f3f46;
+}
+
+body.dark-mode .admin-tab--active,
+body.dark-mode .admin-tab--active:hover {
+    color: #121212;
+    background-color: #60a5fa;
+}
+
+body.dark-mode .form-field > span {
+    color: #cbd5e1;
+}
+
+body.dark-mode .admin-form input,
+body.dark-mode .admin-form textarea,
+body.dark-mode .admin-form select,
+body.dark-mode .auth-form input,
+body.dark-mode .comment-form textarea {
+    color: #e2e8f0;
+    background-color: #1e1e1e;
+    border-color: #3f3f46;
+}
+
+body.dark-mode .admin-form input:focus,
+body.dark-mode .admin-form textarea:focus,
+body.dark-mode .admin-form select:focus,
+body.dark-mode .auth-form input:focus,
+body.dark-mode .comment-form textarea:focus {
+    background-color: #27272a;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+}
+
+body.dark-mode .form-success {
+    color: #6ee7b7;
+    background-color: #064e3b;
+    border-color: #047857;
+}
+
+body.dark-mode .admin-table th {
+    color: #94a3b8;
+    background-color: #27272a;
+}
+
+body.dark-mode .admin-table th,
+body.dark-mode .admin-table td {
+    border-bottom-color: #3f3f46;
+}
+
+body.dark-mode .admin-table tbody tr:hover {
+    background-color: #27272a;
+}
+
+/* 窄屏：后台表格更紧凑 */
+@media (max-width: 768px) {
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .post-title {
+        font-size: 1.55rem;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 10px 10px;
+    }
+
+    .message-head .btn {
+        margin-left: 0;
+    }
+}
+
+} /* 结束 @layer components */
