@@ -3,7 +3,7 @@
 Base URL
 
 - 本地：`http://127.0.0.1:5000`
-- 线上：部署后填入 Render 地址，例如 `https://capstone-api.onrender.com`
+- 线上：Vercel 项目的地址，例如 `https://capstone-api.vercel.app`（部署后填入）
 
 ## 约定
 

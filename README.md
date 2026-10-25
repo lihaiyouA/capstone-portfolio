@@ -159,19 +159,27 @@ npm run test:auth         # lab regression: JWT protection
 npm run test:owner        # lab regression: author ownership
 ```
 
-## Deploying
+## Deploying (two Vercel projects, one repository)
 
-**API → Render**
-1. New → Web Service → connect the repository, root directory `server`
-2. Build: `npm install` · Start: `npm start`
-3. Environment: `MONGO_URI`, `JWT_SECRET`, `NODE_ENV=production`, `CORS_ORIGIN=https://<your-vercel-domain>`
-4. Verify `https://<api>.onrender.com/api/health`
+The API runs as a Vercel Serverless Function (`server/api/index.js` wraps the Express app,
+and `server/vercel.json` routes every request into it), so no separate server host is needed.
 
-**SPA → Vercel**
-1. Import the repository, root directory `client`
-2. Framework preset: Vite · Build: `npm run build` · Output: `dist`
-3. Environment variable: `VITE_API_URL=https://<api>.onrender.com`
-4. Add a rewrite so deep links work: all paths → `/index.html`
+**1. API project — root directory `server`**
+1. Vercel → Add New → Project → import this repository
+2. Root Directory: `server` · Framework Preset: Other
+3. Environment variables:
+   `MONGO_URI`, `JWT_SECRET`, `NODE_ENV=production`, `CORS_ORIGIN=https://<client-domain>`
+4. Deploy, then verify `https://<api>.vercel.app/api/health` → `"db":"connected"`
+
+**2. Client project — root directory `client`**
+1. Same repository, second project · Root Directory: `client` · Framework Preset: Vite
+2. Build `npm run build` · Output `dist`
+3. Environment variable: `VITE_API_URL=https://<api>.vercel.app`
+4. Deploy (`client/vercel.json` already rewrites deep links such as `/blog/:id` to `/index.html`)
+
+> Alternative hosts (Render, Railway, Fly.io) work too: point them at `server/`,
+> build with `npm install`, start with `npm start`. Note Render and Heroku now require a
+> verified payment method even on their free/entry tiers.
 
 ## Notes
 
