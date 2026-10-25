@@ -40,12 +40,13 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // Vercel 的 rewrite 会把「没有对应文件的路径」改写成 /api，原始路径就丢了。
-  // 因此 /api 与 /api/ 一律当作「访问 API 根路径」，返回接口说明（而不是 404）。
+  // Vercel 的 rewrite 只用来「选中这个函数」，req.url 仍然是客户端的原始路径：
+  //   请求 /            -> 函数看到 /
+  //   请求 /api/health  -> 函数看到 /api/health
+  // 所以这里不能给路径加 /api 前缀（会把 / 变成 /api 而 404）。
+  // 只有部分配置会把根路径送成 /api，此时统一还原成 /。
   if (req.url === '/api' || req.url === '/api/') {
     req.url = '/';
-  } else if (!req.url.startsWith('/api')) {
-    req.url = `/api${req.url === '/' ? '' : req.url}`;
   }
 
   return app(req, res);
