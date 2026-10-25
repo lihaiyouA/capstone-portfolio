@@ -40,6 +40,15 @@ async function call(method, path, { token, body } = {}) {
   check('GET /api/health 200', health.status === 200, JSON.stringify(health.data))
   check('数据库 connected', health.data && health.data.db === 'connected', String(health.data && health.data.db))
 
+  // 根路径：Vercel 的 rewrite 会把 / 改写成 /api，入口里再还原成 /，
+  // 所以访问后端域名应该看到接口说明，而不是 404
+  const root = await call('GET', '/')
+  check(
+    'GET / 返回接口说明（不是 404）',
+    root.status === 200 && root.data && root.data.success === true,
+    JSON.stringify(root.data).slice(0, 120)
+  )
+
   const projects = await call('GET', '/api/projects')
   check('GET /api/projects 200', projects.status === 200)
   check('项目 3 条', Array.isArray(projects.data) && projects.data.length === 3, String(projects.data && projects.data.length))
